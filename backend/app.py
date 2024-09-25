@@ -1,8 +1,6 @@
-from flask import Flask, request, session, redirect, url_for, render_template, jsonify
+from flask import Flask, request, session, jsonify
 from flask_bcrypt import Bcrypt
-from sqlalchemy import desc
-
-from config import app, db, migrate, api
+from config import app, db, migrate
 from models import User, Brand, Category, Owner, ShoppingList
 
 bcrypt = Bcrypt()
@@ -74,12 +72,12 @@ def all_brands():
         results = [brand.to_dict() for brand in all_brands]
         return results, 200
     
-    elif request.method == 'POST': 
+    elif request.method == 'POST':
         json_data = request.get_json()
         new_brand = Brand(
             name=json_data.get('name'),
-            category_id=json_data.get('category_id'),  # Make sure to pass category_id
-            owner_id=json_data.get('owner_id'),        # Make sure to pass owner_id
+            category_id=json_data.get('category_id'),  # Ensure category_id is passed
+            owner_id=json_data.get('owner_id'),        # Ensure owner_id is passed
             notes=json_data.get('notes'),
         )
         db.session.add(new_brand)
@@ -120,8 +118,7 @@ def shopping_list():
 
         new_shopping_list = ShoppingList(
             user_id=user_id,
-            brand_id=json_data.get('brand_id'),
-            # Additional fields as necessary
+            name=json_data.get('name'),  # Added name field for the shopping list
         )
         db.session.add(new_shopping_list)
         db.session.commit()
@@ -138,3 +135,68 @@ def delete_shopping_list(id):
     db.session.delete(shopping_list)
     db.session.commit()
     return {}, 204
+
+@app.route('/owners', methods=['GET', 'POST'])
+def all_owners():
+    if request.method == 'GET':
+        all_owners = Owner.query.all()
+        results = [owner.to_dict() for owner in all_owners]
+        return results, 200
+    
+    elif request.method == 'POST':
+        json_data = request.get_json()
+        new_owner = Owner(
+            name=json_data.get('name'),
+            company_type=json_data.get('company_type'),  # Make sure to use company_type
+            notes=json_data.get('notes'),
+        )
+        db.session.add(new_owner)
+        db.session.commit()
+        return new_owner.to_dict(), 201
+
+@app.route('/owners/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
+def owner_by_id(id):
+    owner = Owner.query.filter(Owner.id == id).first()
+
+    if owner is None:
+        return {'error': "Owner not found"}, 404
+    
+    if request.method == 'GET':
+        return owner.to_dict(), 200
+
+    elif request.method == 'DELETE':
+        db.session.delete(owner)
+        db.session.commit()
+        return {}, 204
+    
+@app.route('/categories', methods=['GET', 'POST'])
+def all_categories():
+    if request.method == 'GET':
+        all_categories = Category.query.all()
+        results = [category.to_dict() for category in all_categories]  # Fixed the variable name
+        return results, 200 
+
+    elif request.method == 'POST':
+        json_data = request.get_json()
+        new_category = Category(
+            name=json_data.get('name'),
+        )
+        db.session.add(new_category)
+        db.session.commit()
+
+        return new_category.to_dict(), 201
+
+@app.route('/categories/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
+def category_by_id(id):
+    category = Category.query.filter(Category.id == id).first()
+
+    if category is None:
+        return {'error': "Category not Found"}, 404
+    
+    if request.method == 'GET':
+        return category.to_dict(), 200
+    
+    elif request.method == 'DELETE':
+        db.session.delete(category)
+        db.session.commit()
+        return {}, 204
