@@ -1,14 +1,5 @@
-
-
-from app import app
-
-from models import db, User, Brand,Category,Owner
-
-from app import db
-from models import User, Owner, Brand, Category
-from flask_bcrypt import Bcrypt
-
-bcrypt = Bcrypt()
+from app import app, db
+from models import User, Brand, Category, Owner
 
 def seed():
     # Clear all existing data
@@ -71,6 +62,6 @@ def seed():
     db.session.commit()
     print("Database seeded successfully!")
 
-
 if __name__ == "__main__":
-    seed()
+    with app.app_context():  # Add this line to create an application context
+        seed()
