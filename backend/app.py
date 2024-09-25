@@ -7,8 +7,9 @@ from config import app, db, migrate, api
 
 from models import db, User, Brand, Category, Owner
 
+@app.route('/')
 def home():
-    return '/'
+    return ''
 
 @app.route('/signup', methods=['POST'])
 def signup():
@@ -74,3 +75,42 @@ def logout():
     session.pop('user_id', None)
  
     return {}, 204
+
+@app.route('/brands', methods = ['GET', 'POST'])
+def all_brands():
+    if request.method == 'GET':
+        all_brands = Brand.query.all()
+        results = []
+        for brand in all_brands:
+            results.append(brand.to_dict())
+        return results, 200
+    
+    elif request.method == 'POST': 
+        json_data = request.get_json()
+        new_brand = Brand(
+            name = json_data.get('name'),
+            category = json_data.get('category'),
+            owner = json_data.get('owner'),
+            category_id = json_data.get('category_id'),
+            owner_id = json_data.get('owner_id'),
+            notes = json_data.get('notes'),
+        )
+        db.session.add(new_brand)
+        db.session.commit()
+
+        return new_brand.to_dict(), 201
+
+@app.route('/brands/<int:id>', methods = ['GET', 'PATCH', 'DELETE'])
+def brands_by_id(id):
+    brand = Brand.query.filter(Brand.id == id).first()
+
+    if brand is None:
+        return {'error', "Brand Not Found"}, 404
+    if request.method == 'GET':
+        return brand.to_dict(),200
+    elif request.method == 'DELETE':
+        db.session.delete(brand)
+        db.session.commit()
+        return{}, 204
+    
+   
