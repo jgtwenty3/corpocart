@@ -18,8 +18,10 @@ const config = {
       },
     },
     extend: {
-      fontFamily: { bagel: ['Bagel Fat One', 'sans-serif'], elite: ['Special Elite', 'cursive'], },
+      fontFamily: { bagel: ['Bagel Fat One', 'sans-serif'], elite: ['Special Elite', 'cursive'], monserrat:['Monserrat', 'sans-serif'] },
       colors: {
+        lightText:"#2938E5",
+        darkText:"#C60707",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

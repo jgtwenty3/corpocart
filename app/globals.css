@@ -29,6 +29,8 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+
+    
   }
 
   .dark {
@@ -58,6 +60,7 @@
     --chart-5: 340 75% 55%;
   }
 }
+
 @font-face {
   font-family: 'Bagel Fat One';
   src: url('/fonts/BagelFatOne.ttf') format('truetype');
@@ -72,22 +75,29 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Monserrat";
+  src: url('/fonts/Monserrat.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background font-bagel text-lightText;
+  }
+
+  .dark body {
+    @apply text-darkText font-elite;
   }
 }
 
 .heartbeat {
-	-webkit-animation: heartbeat 1.5s ease-in-out infinite both;
-	        animation: heartbeat 1.5s ease-in-out infinite both;
+  -webkit-animation: heartbeat 1.5s ease-in-out infinite both;
+          animation: heartbeat 1.5s ease-in-out infinite both;
 }
 
- @-webkit-keyframes heartbeat {
+@-webkit-keyframes heartbeat {
   from {
     -webkit-transform: scale(1);
             transform: scale(1);
@@ -121,6 +131,7 @@
             animation-timing-function: ease-out;
   }
 }
+
 @keyframes heartbeat {
   from {
     -webkit-transform: scale(1);
