@@ -132,3 +132,20 @@ export const signOutAction = async () => {
   await supabase.auth.signOut();
   return redirect("/sign-in");
 };
+
+export const getAllProducts = async () => {
+  const supabase = await createClient();
+  let { data: products, error } = await supabase
+    .from('products')
+    .select('*');
+
+  if (error) {
+    console.error('Error fetching products:', error);
+    return null;  // Or handle the error as needed
+  }
+
+  console.log('Fetched products:', products);  // Add this line
+  return products;
+};
+
+
