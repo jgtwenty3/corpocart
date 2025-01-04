@@ -141,11 +141,22 @@ export const getAllProducts = async () => {
 
   if (error) {
     console.error('Error fetching products:', error);
-    return null;  // Or handle the error as needed
+    return null;  
   }
 
-  console.log('Fetched products:', products);  // Add this line
+  
   return products;
 };
-
+export const getAllOwners = async () =>{
+  const supabase = await createClient();
+  let{data:owners, error} = await supabase
+    .from('owners')
+    .select('*')
+  
+  if (error){
+    console.error('Error fetching owners',error);
+    return null;
+  }
+  return owners;
+}
 
