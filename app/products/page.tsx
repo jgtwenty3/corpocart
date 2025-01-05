@@ -28,10 +28,10 @@ const ProductsPage = async ({ searchParams }: { searchParams: { [key: string]: s
   const totalProducts = count || 0;
 
   return (
-    <div className="p-4 rounded-md flex-1 m-4 mt-0">
+    <div className="p-4 rounded-md flex-1 mt-0 w-full border-2 border-red-500">
       <div className="flex items-center justify-between">
         <h1 className="text-darkBlue hidden md:block text-lg font-semibold">All Products</h1>
-        <div className="flex flex-row">
+        <div className="flex flex-row w-fit">
           <TableSearch />
           <CategoryFilter categories={categories} />
         </div>

@@ -13,16 +13,16 @@ const HeaderClient = () => {
 
   return (
     <nav className="relative w-full md:w-full flex justify-between items-center h-16">
-      <div className="flex items-center gap-5 font-semibold text-md md:text-3xl p-5 text-2xl">
+      {/* <div className="flex items-center gap-5 font-semibold text-md md:text-3xl p-5 text-2xl">
         <Link href={"/"}>CORP-O-CART</Link>
-      </div>
+      </div> */}
       <div className="md:hidden flex items-center gap-5 p-3 absolute right-3 top-3">
-        <button onClick={toggleMenu} className="focus:outline-none">
+        <button onClick={toggleMenu} className="focus:outline-none border-2 border-white">
           <Image src={menuOpen ? "/icons/close.svg" : "/icons/menu.svg"} alt="Menu" width={24} height={24} />
         </button>
       </div>
       {menuOpen && (
-        <div className="absolute top-16 right-0 w-full bg-white shadow-lg md:hidden z-10">
+        <div className="absolute top-16 right-0 w-full bg-black shadow-lg md:hidden z-10 p-5">
           <div className="flex flex-col items-end p-4">
             <Link href={"/products"} className="py-2" onClick={toggleMenu}>PRODUCTS</Link>
             <Link href={"/owners"} className="py-2" onClick={toggleMenu}>OWNERS</Link>
