@@ -4,7 +4,8 @@ import OwnerCard from '@/components/OwnerCard';
 import Pagination from '@/components/Pagination';
 import TableSearch from '@/components/TableSearch';
 import CategoryFilter from '@/components/CategoryFilter';
-import { ownerType } from '@/lib/data';
+import { ownerType } from '@/lib/data'; // Assuming this contains the predefined list of owner types
+
 const ITEM_PER_PAGE = 24;
 
 const OwnersPage = async ({ searchParams }: { searchParams: { [key: string]: string } | undefined }) => {
@@ -14,7 +15,7 @@ const OwnersPage = async ({ searchParams }: { searchParams: { [key: string]: str
   const supabase = await createClient();
 
   // Fetch all owners
-  let query = supabase.from('owners').select('*');
+  let query = supabase.from('owners').select('*', { count: 'exact' });
 
   if (search) {
     query = query.ilike('name', `%${search}%`);
@@ -32,8 +33,8 @@ const OwnersPage = async ({ searchParams }: { searchParams: { [key: string]: str
       <div className="flex items-center justify-between">
         <h1 className="text-darkBlue hidden md:block text-lg font-semibold">All Owners</h1>
         <div className='flex flex-row'>
-            <TableSearch />
-            <CategoryFilter categories={ownerType} />
+          <TableSearch />
+          <CategoryFilter categories={ownerType} />
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

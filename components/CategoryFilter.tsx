@@ -21,7 +21,7 @@ const CategoryFilter = ({ categories }: { categories: string[] }) => {
   return (
     <select
       onChange={handleCategoryChange}
-      className="mb-4 p-2 border rounded w-full md:w-auto"
+      className="mb-4 p-2 border rounded-lg w-full md:w-auto"
       defaultValue=""
     >
       <option value="">All Categories</option>

@@ -5,6 +5,7 @@ import Pagination from '@/components/Pagination';
 import TableSearch from '@/components/TableSearch';
 import CategoryFilter from '@/components/CategoryFilter';
 import { categories } from '@/lib/data';
+
 const ITEM_PER_PAGE = 24;
 
 const ProductsPage = async ({ searchParams }: { searchParams: { [key: string]: string } | undefined }) => {
@@ -13,8 +14,7 @@ const ProductsPage = async ({ searchParams }: { searchParams: { [key: string]: s
 
   const supabase = await createClient();
 
-  // Fetch all products
-  let query = supabase.from('products').select('*');
+  let query = supabase.from('products_with_owners').select('*', { count: 'exact' });
 
   if (search) {
     query = query.ilike('name', `%${search}%`);
@@ -31,13 +31,12 @@ const ProductsPage = async ({ searchParams }: { searchParams: { [key: string]: s
     <div className="p-4 rounded-md flex-1 m-4 mt-0">
       <div className="flex items-center justify-between">
         <h1 className="text-darkBlue hidden md:block text-lg font-semibold">All Products</h1>
-        <div className='flex flex-row'>
-            <TableSearch />
-            <CategoryFilter categories={categories} />
+        <div className="flex flex-row">
+          <TableSearch />
+          <CategoryFilter categories={categories} />
         </div>
-        
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid-container">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
