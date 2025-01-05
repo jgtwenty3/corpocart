@@ -50,6 +50,9 @@ export default async function AuthButton() {
     <div className="flex items-center gap-4">
       Hey, {user.email}!
       <form action={signOutAction}>
+      <Button asChild size="sm" variant={"default"}>
+        <Link href="/cart">CART</Link>
+      </Button>
         <Button type="submit" variant={"outline"}>
           Sign out
         </Button>
@@ -63,6 +66,7 @@ export default async function AuthButton() {
       <Button asChild size="sm" variant={"default"}>
         <Link href="/sign-up">SIGN UP</Link>
       </Button>
+      
     </div>
   );
 }
