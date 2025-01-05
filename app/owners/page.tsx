@@ -1,56 +1,39 @@
-import { createClient } from '@/utils/supabase/server';
 import React from 'react';
-import { getAllOwners } from '../actions';
-import Table from '@/components/Table';
+import { createClient } from '@/utils/supabase/server';
+import OwnerCard from '@/components/OwnerCard';
 import Pagination from '@/components/Pagination';
+import TableSearch from '@/components/TableSearch';
 
-type Owner = {
-  id: string;
-  name: string;
-  owner_type: string;
-  notes?: string;
-  description?: string;
-};
+const ITEM_PER_PAGE = 24;
 
-const columns = [
-  { header: "Name", accessor: "name" },
-  { header: "Ownership Type", accessor: "owner_type" },
-];
-
-const renderRow = (owner: Owner) => (
-  <tr key={owner.id}>
-    <td className=' text-xl p-2'>{owner.name}</td>
-    <td className=' text-xl'>{owner.owner_type}</td>
-  </tr>
-);
-
-const ITEM_PER_PAGE = 25;
-
-const OwnersPage = async ({
-  searchParams
-}: { searchParams: { [key: string]: string } | undefined }) => {
-  const supabase = await createClient();
-
-  const owners = await getAllOwners();
-  console.log(owners);
-  const { page, ...queryParams } = searchParams;
-
+const OwnersPage = async ({ searchParams }: { searchParams: { [key: string]: string } | undefined }) => {
+  const { page, search } = searchParams;
   const p = page ? parseInt(page) : 1;
 
-  // Calculate the start and end indices for slicing the data array
-  const startIndex = (p - 1) * ITEM_PER_PAGE;
-  const endIndex = startIndex + ITEM_PER_PAGE;
+  const supabase = await createClient();
 
-  // Slice the owners array to get the current page items
-  const currentPageOwners = owners.slice(startIndex, endIndex);
+  let query = supabase.from('owners').select('*');
 
-  // Assuming that owners.length gives you the total number of items
-  const count = owners.length;
+  if (search) {
+    query = query.ilike('name', `%${search}%`);
+  }
+
+  const { data: owners = [], count } = await query.range((p - 1) * ITEM_PER_PAGE, p * ITEM_PER_PAGE - 1);
+
+  const totalOwners = count || 0;
 
   return (
-    <div>
-      <Table columns={columns} renderRow={renderRow} data={currentPageOwners} />
-      <Pagination page={p} count={count} />
+    <div className="p-4 rounded-md flex-1 m-4 mt-0">
+      <div className="flex items-center justify-between">
+        <h1 className="text-darkBlue hidden md:block text-lg font-semibold">All Owners</h1>
+        <TableSearch />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {owners.map((owner) => (
+          <OwnerCard key={owner.id} owner={owner} />
+        ))}
+      </div>
+      <Pagination page={p} count={totalOwners} />
     </div>
   );
 };

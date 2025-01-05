@@ -1,58 +1,39 @@
-import Table from '@/components/Table'
+import React from 'react';
 import { createClient } from '@/utils/supabase/server';
-import React from 'react'
-import { getAllProducts } from '../actions';
+import ProductCard from '@/components/ProductCard';
 import Pagination from '@/components/Pagination';
+import TableSearch from '@/components/TableSearch';
 
-type Product = {
-  id: string;
-  name: string;
-  notes?: string;
-  category?: string;
-  owner?: string;
-};
+const ITEM_PER_PAGE = 24;
 
-const columns = [
-  { header: "Name", accessor: "name" },
-  { header: "Owner", accessor: "owner" },
-  { header: "Notes", accessor: "notes" },
-];
-
-const renderRow = (product: Product) => (
-  <tr key={product.id} className='flex'>
-    <td className='flex items-center p-2 text-lg'>{product.name}</td>
-    <td>{product.owner}</td>
-    <td>{product.notes}</td>
-  </tr>
-);
-
-const ITEM_PER_PAGE = 25;
-
-const ProductsPage = async ({
-  searchParams
-}: { searchParams: { [key: string]: string } | undefined }) => {
-  const supabase = await createClient();
-
-  const products = await getAllProducts();
-
-  const { page, ...queryParams } = searchParams;
-
+const ProductsPage = async ({ searchParams }: { searchParams: { [key: string]: string } | undefined }) => {
+  const { page, search } = searchParams;
   const p = page ? parseInt(page) : 1;
 
-  // Calculate the start and end indices for slicing the data array
-  const startIndex = (p - 1) * ITEM_PER_PAGE;
-  const endIndex = startIndex + ITEM_PER_PAGE;
+  const supabase = await createClient();
 
-  // Slice the products array to get the current page items
-  const currentPageProducts = products.slice(startIndex, endIndex);
+  let query = supabase.from('products').select('*');
 
-  // Assuming that products.length gives you the total number of items
-  const count = products.length;
+  if (search) {
+    query = query.ilike('name', `%${search}%`);
+  }
+
+  const { data: products = [], count } = await query.range((p - 1) * ITEM_PER_PAGE, p * ITEM_PER_PAGE - 1);
+
+  const totalProducts = count || 0;
 
   return (
-    <div>
-      <Table columns={columns} renderRow={renderRow} data={currentPageProducts} />
-      <Pagination page={p} count={count} />
+    <div className="p-4 rounded-md flex-1 m-4 mt-0">
+      <div className="flex items-center justify-between">
+        <h1 className="text-darkBlue hidden md:block text-lg font-semibold">All Products</h1>
+        <TableSearch />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+      <Pagination page={p} count={totalProducts} />
     </div>
   );
 };
