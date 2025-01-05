@@ -28,7 +28,7 @@ const ProductsPage = async ({ searchParams }: { searchParams: { [key: string]: s
   const totalProducts = count || 0;
 
   return (
-    <div className="p-4 rounded-md flex-1 mt-0 w-full border-2 border-red-500">
+    <div className="p-4 rounded-md flex-1 mt-0 w-full border-0 md:border-2 md:border-darkText">
       <div className="flex items-center justify-between">
         <h1 className="text-darkBlue hidden md:block text-lg font-semibold">All Products</h1>
         <div className="flex flex-row w-fit">
