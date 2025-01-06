@@ -144,19 +144,51 @@ export const getAllProducts = async () => {
     return null;  
   }
 
-  
   return products;
 };
-export const getAllOwners = async () =>{
+
+export const getAllOwners = async () => {
   const supabase = await createClient();
-  let{data:owners, error} = await supabase
+  let { data: owners, error } = await supabase
     .from('owners')
-    .select('*')
-  
-  if (error){
-    console.error('Error fetching owners',error);
+    .select('*');
+
+  if (error) {
+    console.error('Error fetching owners:', error);
     return null;
   }
-  return owners;
-}
 
+  return owners;
+};
+
+export const getProductById = async (id: string) => {
+  const supabase = await createClient();
+  const { data: product, error } = await supabase
+    .from('products_with_owners')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    console.error('Error fetching product:', error);
+    return null;
+  }
+
+  return product;
+};
+
+export const getOwnerById = async (id: string) => {
+  const supabase = await createClient();
+  const { data: owner, error } = await supabase
+    .from('owners')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) {
+    console.error('Error fetching owner:', error);
+    return null;
+  }
+
+  return owner;
+};

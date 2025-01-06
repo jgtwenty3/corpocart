@@ -27,7 +27,7 @@ const HeaderClient = () => {
         </button>
       </div>
       {menuOpen && (
-        <div className="absolute top-16 right-0 w-full bg-black text-darkText shadow-lg md:hidden z-10 p-5 border-2 border-black ">
+        <div className="absolute top-16 right-0 w-full bg-darkText text-black shadow-lg md:hidden z-10 p-5 border-2 border-black ">
           <div className="flex flex-col items-end p-4">
             <Link href={"/products"} className="py-2" onClick={toggleMenu}>PRODUCTS</Link>
             <Link href={"/owners"} className="py-2" onClick={toggleMenu}>OWNERS</Link>
