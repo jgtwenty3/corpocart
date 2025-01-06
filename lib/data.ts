@@ -1,6 +1,7 @@
 export const categories = [
     'Baby Food', 
     'Baby Formula', 
+    "Baby Products",
     'Candy', 
     'Cereal', 
     'Cheese', 
@@ -8,16 +9,24 @@ export const categories = [
     'Chips & Snacks', 
     'Coffee',
     'Crackers',
+    "Deodorant",
     'Drinks',
     'Energy Drinks',
+    "Feminine Hygeine Products",
     'Frozen Pizza',
+    "Household Cleaners",
     'Ice Cream',
     'Juice',
+    "Laundry Detergent",
+    "Paper Products",
     'Pasta Sauce',
     'Pickles',
     'Sauces & Dressings',
+    "Shampoo",
+    "Skincare",
     'Supplements',
     "Tea",
+    "Toothpaste",
 ];
 
 export const ownerType =[

@@ -84,7 +84,7 @@
 
 @layer base {
   body {
-    @apply bg-background font-bagel text-lightText;
+    @apply  font-elite text-darkText;
   }
 
   .dark body {
@@ -189,5 +189,4 @@
     grid-template-columns: repeat(4, minmax(0, 1fr)); /* 4 columns on large devices */
   }
 }
-
 

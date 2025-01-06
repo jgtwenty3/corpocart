@@ -9,13 +9,13 @@ import { ownerType } from '@/lib/data'; // Assuming this contains the predefined
 const ITEM_PER_PAGE = 24;
 
 const OwnersPage = async ({ searchParams }: { searchParams: { [key: string]: string } | undefined }) => {
-  const { page, search, category } = searchParams;
+  const { page, search, category } = await searchParams;
   const p = page ? parseInt(page) : 1;
 
   const supabase = await createClient();
 
   // Fetch all owners
-  let query = supabase.from('owners').select('*', { count: 'exact' });
+  let query = supabase.from('owners').select('*', { count: 'exact' }).order('name',{ascending:true});
 
   if (search) {
     query = query.ilike('name', `%${search}%`);
@@ -29,7 +29,7 @@ const OwnersPage = async ({ searchParams }: { searchParams: { [key: string]: str
   const totalOwners = count || 0;
 
   return (
-    <div className="p-4 rounded-md flex-1 m-4 mt-0">
+    <div className="m-0 rounded-md flex-1 mt-0 w-full">
       <div className="flex items-center justify-between">
         <h1 className="text-darkBlue hidden md:block text-lg font-semibold">All Owners</h1>
         <div className='flex flex-row'>

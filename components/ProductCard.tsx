@@ -10,11 +10,12 @@ type Product = {
 
 const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <div className="bg-white rounded-lg p-4">
-      <h2 className="text-xl font-bold">{product.name}</h2>
+    <div className="bg-white rounded-lg p-4 border-2 border-black">
+      <h2 className="text-lg font-bold">{product.name}</h2>
+      <p className="text-sm text-gray-600">Category: {product.category}</p>
       <p className="text-sm md:text-md text-gray-600">Owner: {product.owner_name || 'Unknown'}</p>
       <p className="text-sm md:text-md text-gray-600">Ownership Type: {product.owner_type || 'Unknown'}</p>
-      <p className="text-sm text-gray-600">Category: {product.category}</p>
+     
       
     </div>
   );

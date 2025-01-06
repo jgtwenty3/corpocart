@@ -21,7 +21,7 @@ const Pagination = ({ page, count }: { page: number; count: number }) => {
       <div className="flex items-center gap-2 order-2 sm:order-1">
         <button
           disabled={!hasPrev}
-          className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+          className="py-2 px-4 rounded-md bg-black text-darkText text-lg border-2 border-darkText font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={() => {
             changePage(page - 1);
           }}
@@ -29,7 +29,7 @@ const Pagination = ({ page, count }: { page: number; count: number }) => {
           Prev
         </button>
         <button
-          className="py-2 px-4 rounded-md bg-slate-200 text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+          className="py-2 px-4 rounded-md bg-black text-darkText border-2 border-darkText text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
           disabled={!hasNext}
           onClick={() => {
             changePage(page + 1);
