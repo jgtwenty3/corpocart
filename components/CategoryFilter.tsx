@@ -1,36 +1,86 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 const CategoryFilter = ({ categories }: { categories: string[] }) => {
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const dropdownRef = useRef<HTMLUListElement>(null);
 
-  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCategory = event.target.value;
-
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
     const params = new URLSearchParams(window.location.search);
-    if (selectedCategory) {
-      params.set('category', selectedCategory);
+    if (category) {
+      params.set('category', category);
     } else {
       params.delete('category');
     }
     router.push(`${window.location.pathname}?${params}`);
+    setIsOpen(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <select
-      onChange={handleCategoryChange}
-      className="mb-4 p-2 border rounded-lg w-full md:w-auto"
-      defaultValue=""
-    >
-      <option value="">All Categories</option>
-      {categories.map((category) => (
-        <option key={category} value={category}>
-          {category}
-        </option>
-      ))}
-    </select>
+    <div className="relative inline-block w-full md:w-auto">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="bg-black border border-darkText text-white hover:border-gray-500 px-4 py-2 rounded-lg shadow flex items-center justify-between w-full md:w-auto"
+      >
+        {selectedCategory ? selectedCategory : "All Categories"}
+        <svg
+          className={`w-4 h-4 ml-2 transition-transform ${
+            isOpen ? "transform rotate-180" : ""
+          }`}
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
+      </button>
+      {isOpen && (
+        <ul
+          ref={dropdownRef}
+          className="absolute left-0 mt-2 max-h-60 w-full md:w-auto bg-black text-white border border-darkText rounded-lg shadow-lg z-10 overflow-y-auto"
+        >
+          <li
+            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+            onClick={() => handleCategoryChange("")}
+          >
+            All Categories
+          </li>
+          {categories.map((category) => (
+            <li
+              key={category}
+              className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+              onClick={() => handleCategoryChange(category)}
+            >
+              {category}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 };
 

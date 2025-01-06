@@ -12,9 +12,9 @@ const OwnerCard = ({ owner }: { owner: Owner }) => {
   return (
     <Link href={`/owners/${owner.id}`} passHref>
       <div className="bg-white p-4 rounded-lg shadow-md cursor-pointer">
-        <h2 className="text-xl font-bold">{owner.name}</h2>
+        <h2 className="text-xl md:text-lg font-bold">{owner.name}</h2>
         <p className="text-sm text-gray-600">Type: {owner.owner_type}</p>
-        <p className="text-sm text-gray-600">Notes: {owner.notes}</p>
+       
       </div>
     </Link>
   );

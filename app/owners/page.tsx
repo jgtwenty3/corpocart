@@ -29,7 +29,7 @@ const OwnersPage = async ({ searchParams }: { searchParams: { [key: string]: str
   const totalOwners = count || 0;
 
   return (
-    <div className="m-0 rounded-md flex-1 mt-0 w-full">
+    <div className="m-0 rounded-md flex-1 mt-0 w-fit">
       <div className="flex items-center justify-between">
         <h1 className="text-darkBlue hidden md:block text-lg font-semibold">All Owners</h1>
         <div className='flex flex-row'>
