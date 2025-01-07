@@ -12,11 +12,11 @@ const HeaderClient = () => {
   };
 
   return (
-    <nav className="relative w-full md:w-full flex justify-between items-center h-16">
+    <nav className="relative w-full md:w-full flex justify-between  h-10">
       {/* <div className="flex items-center gap-5 font-semibold text-md md:text-3xl p-5 text-2xl">
         <Link href={"/"}>CORP-O-CART</Link>
       </div> */}
-      <div className="md:hidden flex items-center gap-5 p-3 absolute right-3 top-3">
+      <div className="md:hidden flex  gap-5 p-3 absolute right-3 top-3">
         <button onClick={toggleMenu} className="focus:outline-none border-2 border-darkText">
           <Image
             src={menuOpen ? "/icons/close.svg" : "/icons/menu.svg"}

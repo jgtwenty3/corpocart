@@ -1,6 +1,7 @@
 import React from 'react';
 import { getProductById } from '@/app/actions';
 import SingleProductClient from '@/components/SingleProductClient';
+
 const SingleProductPage = async ({
   params: { id },
 }: {

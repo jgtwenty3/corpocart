@@ -4,12 +4,13 @@ import ProductCard from '@/components/ProductCard';
 import Pagination from '@/components/Pagination';
 import TableSearch from '@/components/TableSearch';
 import CategoryFilter from '@/components/CategoryFilter';
-import { categories } from '@/lib/data';
+import OwnerTypeFilter from '@/components/OwnerTypeFilter';
+import { categories, ownerTypes } from '@/lib/data';
 
 const ITEM_PER_PAGE = 24;
 
 const ProductsPage = async ({ searchParams }: { searchParams: { [key: string]: string } | undefined }) => {
-  const { page, search, category } = await searchParams;
+  const { page, search, category, ownerType } = await searchParams;
   const p = page ? parseInt(page) : 1;
 
   const supabase = await createClient();
@@ -22,21 +23,22 @@ const ProductsPage = async ({ searchParams }: { searchParams: { [key: string]: s
   if (category) {
     query = query.eq('category', category);
   }
+  if (ownerType) {
+    query = query.eq('owner_type', ownerType);
+  }
 
   const { data: products = [], count } = await query.range((p - 1) * ITEM_PER_PAGE, p * ITEM_PER_PAGE - 1);
 
   const totalProducts = count || 0;
 
   return (
-    <div className="m-0 rounded-md flex-1 mt-0 ">
-      <div className="flex items-center justify-between">
-        <h1 className="text-darkBlue hidden md:block text-lg font-semibold">All Products</h1>
-        <div className="flex flex-row w-fit">
-          <TableSearch />
-          <CategoryFilter categories={categories} />
-        </div>
+    <div className="rounded-md flex-1 p-2 md:p-5">
+      <div className="flex flex-wrap md:flex-nowrap justify-end gap-2 mt-5">
+        <TableSearch />
+        <CategoryFilter categories={categories} />
+        <OwnerTypeFilter ownerTypes={ownerTypes} />
       </div>
-      <div className="grid-container">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-4">
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

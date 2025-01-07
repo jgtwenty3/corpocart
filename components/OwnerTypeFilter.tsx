@@ -3,19 +3,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
-const CategoryFilter = ({ categories }: { categories: string[] }) => {
+const OwnerTypeFilter = ({ ownerTypes = [] }: { ownerTypes: string[] }) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedOwnerType, setSelectedOwnerType] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLUListElement>(null);
 
-  const handleCategoryChange = (category: string) => {
-    setSelectedCategory(category);
+  const handleOwnerTypeChange = (ownerType: string) => {
+    setSelectedOwnerType(ownerType);
     const params = new URLSearchParams(window.location.search);
-    if (category) {
-      params.set('category', category);
+    if (ownerType) {
+      params.set('ownerType', ownerType);
     } else {
-      params.delete('category');
+      params.delete('ownerType');
     }
     router.push(`${window.location.pathname}?${params}`);
     setIsOpen(false);
@@ -40,7 +40,7 @@ const CategoryFilter = ({ categories }: { categories: string[] }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="h-10 w-full bg-black border border-darkText text-white hover:border-gray-500 px-4 py-2 rounded-lg shadow flex items-center justify-between"
       >
-        {selectedCategory ? selectedCategory : "Categories"}
+        {selectedOwnerType ? selectedOwnerType : "Owner Types"}
         <svg
           className={`w-4 h-4 ml-2 transition-transform ${
             isOpen ? "transform rotate-180" : ""
@@ -65,17 +65,17 @@ const CategoryFilter = ({ categories }: { categories: string[] }) => {
         >
           <li
             className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-            onClick={() => handleCategoryChange("")}
+            onClick={() => handleOwnerTypeChange("")}
           >
-            All Categories
+            All Owner Types
           </li>
-          {categories.map((category) => (
+          {ownerTypes.map((ownerType) => (
             <li
-              key={category}
+              key={ownerType}
               className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              onClick={() => handleCategoryChange(category)}
+              onClick={() => handleOwnerTypeChange(ownerType)}
             >
-              {category}
+              {ownerType}
             </li>
           ))}
         </ul>
@@ -84,4 +84,4 @@ const CategoryFilter = ({ categories }: { categories: string[] }) => {
   );
 };
 
-export default CategoryFilter;
+export default OwnerTypeFilter;

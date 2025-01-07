@@ -36,10 +36,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <main className="min-h-screen flex flex-col items-center">
-            <div className="flex-1 w-fit flex flex-col items-center">
+            <div className="flex-1 w-full flex flex-col items-center">
               <HeaderServer />
               <HeaderClient />
-              <div className="flex-1 w-full">
+              <div className="flex-1">
                 {children}
               </div>
               <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-8">

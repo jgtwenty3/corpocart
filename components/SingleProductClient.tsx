@@ -16,9 +16,9 @@ const SingleProductClient = ({ product }: ProductProps) => {
   const router = useRouter();
 
   return (
-    <div className="p-4 rounded-md flex-1 m-4 shadow-md">
+    <div className="p-4 rounded-md flex-1 m-4 shadow-md ">
       
-      <div className='mb-10'>
+      <div className='mb-10 flex flex-col'>
         <h1 className="text-4xl font-bold mb-2">{product.name}</h1>
         <p className="text-2xl text-white mb-5">Category: {product.category}</p>
         <p className="text-2xl text-white mb-2">Owner: {product.owner_name}</p>

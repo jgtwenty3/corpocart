@@ -29,7 +29,7 @@ export const categories = [
     "Toothpaste",
 ];
 
-export const ownerType =[
+export const ownerTypes =[
     'Megacorporation',
     'Private Equity',
     'Founder or Family Owned'

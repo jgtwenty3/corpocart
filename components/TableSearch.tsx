@@ -1,32 +1,31 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const TableSearch = () => {
+  const [search, setSearch] = useState('');
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const value = (e.currentTarget[0] as HTMLInputElement).value;
-
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
     const params = new URLSearchParams(window.location.search);
-    params.set("search", value);
+    if (event.target.value) {
+      params.set('search', event.target.value);
+    } else {
+      params.delete('search');
+    }
     router.push(`${window.location.pathname}?${params}`);
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="w-full m-3 md:w-auto flex items-center gap-2 text-xs rounded-full ring-[1.5px] ring-gray-300 px-2"
-    >
-      <input
-        type="text"
-        placeholder="Search..."
-        className="w-[200px] p-4 bg-transparent outline-none text-darkBlue"
-      />
-    </form>
+    <input
+      type="text"
+      value={search}
+      onChange={handleSearchChange}
+      placeholder="Search..."
+      className="h-10 w-full md:w-56 border border-gray-300 rounded-lg px-4 py-2"
+    />
   );
 };
 

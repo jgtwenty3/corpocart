@@ -38,7 +38,7 @@ const Pagination = ({ page, count }: { page: number; count: number }) => {
           Next
         </button>
       </div>
-      <div className="flex items-center py-2 text-sm order-1 sm:order-2 overflow-x-auto">
+      {/* <div className="flex items-center py-2 text-sm order-1 sm:order-2 overflow-x-auto">
         {Array.from({ length: Math.ceil(count / ITEM_PER_PAGE) }, (_, index) => {
           const pageIndex = index + 1;
           return (
@@ -55,7 +55,7 @@ const Pagination = ({ page, count }: { page: number; count: number }) => {
             </button>
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
 };
