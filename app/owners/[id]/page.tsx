@@ -2,13 +2,14 @@ import React from 'react';
 import { getOwnerById, getProductsByOwner } from '@/app/actions';
 import SingleOwnerClient from '@/components/SingleOwnerClient';
 
-interface PageProps {
+interface Params {
   params: {
     id: string;
   };
 }
-const SingleOwnerPage: React.FC<PageProps> = async ({ params }) => {
-  const { id } = await params;
+
+const SingleOwnerPage: React.FC<Params> = async ({ params }) => {
+  const { id } = await params;  
   const owner = await getOwnerById(id);
 
   if (!owner) {
