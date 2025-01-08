@@ -2,8 +2,14 @@ import React from 'react';
 import { getProductById, getRecommendedProducts } from '@/app/actions';
 import SingleProductClient from '@/components/SingleProductClient';
 
-const SingleProductPage = async ({ params }: { params: { id: string } }) => {
-  const { id } = await Promise.resolve(params);
+type ParamsType = {
+  params: {
+    id: string;
+  }
+};
+
+const SingleProductPage: React.FC<ParamsType> = async ({ params }) => {
+  const { id } = await params; // No need to use Promise.resolve here
   const product = await getProductById(id);
 
   if (!product) {
@@ -19,7 +25,5 @@ const SingleProductPage = async ({ params }: { params: { id: string } }) => {
 
   return <SingleProductClient product={product} recommendations={recommendations} />;
 };
-
-
 
 export default SingleProductPage;
