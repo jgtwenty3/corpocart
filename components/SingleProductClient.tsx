@@ -38,8 +38,8 @@ const SingleProductClient = ({ product, recommendations }: ProductProps) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {recommendations.map((rec) => (
               <Link href={`/products/${rec.id}`} key={rec.id}>
-                <div className="p-4 border-2 rounded-md bg-white border-darkText hover:bg-gray-100">
-                  <h3 className="text-2xl font-bold">{rec.name}</h3>
+                <div className="p-4 border-2 rounded-md bg-white border-black hover:bg-gray-100">
+                  <h3 className="text-2xl font-bold text-black">{rec.name}</h3>
                   <p className="text-lg text-gray-600">Category: {rec.category}</p>
                   <p className="text-lg text-gray-600">Owner: {rec.owner_name}</p>
                   <p className="text-lg text-gray-600">Owner Type: {rec.owner_type}</p>
@@ -52,7 +52,7 @@ const SingleProductClient = ({ product, recommendations }: ProductProps) => {
 
       <button
         onClick={() => router.back()}
-        className="mb-4 px-4 py-2 bg-darkText text-black rounded-md"
+        className="mb-4 px-4 py-2 rounded-md"
       >
         Back
       </button>

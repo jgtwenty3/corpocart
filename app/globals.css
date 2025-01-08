@@ -84,11 +84,11 @@
 
 @layer base {
   body {
-    @apply  font-elite text-darkText;
+    @apply  font-elite text-black;
   }
 
   .dark body {
-    @apply text-darkText font-elite;
+    @apply text-white font-elite;
   }
 }
 
@@ -168,25 +168,38 @@
 }
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(1, minmax(0, 1fr)); /* 1 column on small devices */
+  grid-template-columns: repeat(1, minmax(0, 1fr)) !important; /* 1 column on small devices */
   gap: 1rem;
 }
 
 @media (min-width: 640px) {
   .grid-container {
-    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 columns on small devices */
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important; /* 2 columns on small devices */
   }
 }
 
 @media (min-width: 768px) {
   .grid-container {
-    grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 columns on medium devices */
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important; /* 3 columns on medium devices */
   }
 }
 
 @media (min-width: 1024px) {
   .grid-container {
-    grid-template-columns: repeat(4, minmax(0, 1fr)); /* 4 columns on large devices */
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important; /* 4 columns on large devices */
   }
 }
+
+@media (min-width: 1280px) {
+  .grid-container {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important; /* 5 columns on extra-large devices */
+  }
+}
+
+@media (min-width: 1920px) {
+  .grid-container {
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important; /* 6 columns on ultra-wide screens */
+  }
+}
+
 

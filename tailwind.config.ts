@@ -22,6 +22,9 @@ const config = {
       colors: {
         lightText:"#2938E5",
         darkText:"#C60707",
+        green:"#03AF1A",
+        orange:"#FF940A",
+        yellow:"#FFE733",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

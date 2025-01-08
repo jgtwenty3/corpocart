@@ -10,7 +10,7 @@ import { categories, ownerTypes } from '@/lib/data';
 const ITEM_PER_PAGE = 24;
 
 const ProductsPage = async ({ searchParams }: { searchParams?: { [key: string]: string } }) => {
-  const { page, search, category, ownerType } = searchParams ?? {};
+  const { page, search, category, ownerType } = await searchParams ?? {};
   const p = page ? parseInt(page) : 1;
 
   const supabase = await createClient();
@@ -38,7 +38,7 @@ const ProductsPage = async ({ searchParams }: { searchParams?: { [key: string]: 
         <CategoryFilter categories={categories} />
         <OwnerTypeFilter ownerTypes={ownerTypes} />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 mt-4">
         {products!.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
