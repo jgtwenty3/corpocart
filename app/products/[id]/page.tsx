@@ -2,14 +2,14 @@ import React from 'react';
 import { getProductById, getRecommendedProducts } from '@/app/actions';
 import SingleProductClient from '@/components/SingleProductClient';
 
-type ParamsType = {
+interface PageProps {
   params: {
     id: string;
-  }
-};
+  };
+}
 
-const SingleProductPage: React.FC<ParamsType> = async ({ params }) => {
-  const { id } = await params; // No need to use Promise.resolve here
+const SingleProductPage: React.FC<PageProps> = async ({ params }) => {
+  const { id } = await params; 
   const product = await getProductById(id);
 
   if (!product) {
