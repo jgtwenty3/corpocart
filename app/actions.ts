@@ -221,9 +221,10 @@ export const getProductsByOwner = async (ownerName: string) => {
 
   if (error) {
     console.error('Error fetching products by owner:', error);
-  } else {
-    console.log('Fetched products by owner:', products);
+    return [];
   }
 
+  console.log('Fetched products by owner:', products);
   return products;
 };
+

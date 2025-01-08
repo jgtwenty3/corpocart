@@ -10,7 +10,7 @@ const SingleOwnerPage = async ({ params }: { params: { id: string } }) => {
     return <div>Owner not found</div>;
   }
 
-  const products = await getProductsByOwner(owner.name);
+  const products = await getProductsByOwner(owner.name) || [];
 
   return <SingleOwnerClient owner={owner} products={products} />;
 };

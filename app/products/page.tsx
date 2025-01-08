@@ -9,8 +9,8 @@ import { categories, ownerTypes } from '@/lib/data';
 
 const ITEM_PER_PAGE = 24;
 
-const ProductsPage = async ({ searchParams }: { searchParams: { [key: string]: string } | undefined }) => {
-  const { page, search, category, ownerType } = await searchParams;
+const ProductsPage = async ({ searchParams }: { searchParams?: { [key: string]: string } }) => {
+  const { page, search, category, ownerType } = searchParams ?? {};
   const p = page ? parseInt(page) : 1;
 
   const supabase = await createClient();
@@ -39,7 +39,7 @@ const ProductsPage = async ({ searchParams }: { searchParams: { [key: string]: s
         <OwnerTypeFilter ownerTypes={ownerTypes} />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-4">
-        {products.map((product) => (
+        {products!.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
