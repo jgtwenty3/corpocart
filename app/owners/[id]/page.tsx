@@ -3,7 +3,7 @@ import { getOwnerById, getProductsByOwner } from '@/app/actions';
 import SingleOwnerClient from '@/components/SingleOwnerClient';
 
 const SingleOwnerPage = async ({ params }: { params: { id: string } }) => {
-  const { id } = await Promise.resolve(params);
+  const { id } = params;
   const owner = await getOwnerById(id);
 
   if (!owner) {

@@ -20,6 +20,9 @@ export default function Header() {
           BUY! BUY! BUY!
         </p>
       </div>
+      <div>
+        This information is gathered to the best of my ability and is updated when possible. Please do your own research.
+      </div>
     </div>
   );
 }
