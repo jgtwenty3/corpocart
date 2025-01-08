@@ -192,3 +192,23 @@ export const getOwnerById = async (id: string) => {
 
   return owner;
 };
+
+export const getRecommendedProducts = async (category: string, ownerTypes: string[]) => {
+  const supabase = await createClient();
+  
+
+  const { data: products = [], error } = await supabase
+    .from('products_with_owners')
+    .select('*')
+    .eq('category', category)
+    .in('owner_type', ownerTypes);
+
+  if (error) {
+    console.error('Error fetching recommended products:', error);
+  } else {
+    console.log('Fetched recommended products:', products);
+  }
+
+  return products;
+};
+

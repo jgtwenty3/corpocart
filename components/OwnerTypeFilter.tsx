@@ -40,7 +40,7 @@ const OwnerTypeFilter = ({ ownerTypes = [] }: { ownerTypes: string[] }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="h-10 w-full bg-black border border-darkText text-white hover:border-gray-500 px-4 py-2 rounded-lg shadow flex items-center justify-between"
       >
-        {selectedOwnerType ? selectedOwnerType : "Owner Types"}
+        {selectedOwnerType ? selectedOwnerType : "Ownership Type"}
         <svg
           className={`w-4 h-4 ml-2 transition-transform ${
             isOpen ? "transform rotate-180" : ""
@@ -67,7 +67,7 @@ const OwnerTypeFilter = ({ ownerTypes = [] }: { ownerTypes: string[] }) => {
             className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
             onClick={() => handleOwnerTypeChange("")}
           >
-            All Owner Types
+            All Ownership Types
           </li>
           {ownerTypes.map((ownerType) => (
             <li
