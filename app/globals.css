@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --background: 0 0% 100%; 
+    --foreground: 0 0% 3.9%; 
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
@@ -30,10 +30,11 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
 
-    
+    --menu-icon: url('/icons/menu-light.svg');
+    --close-icon: url('/icons/close-light.svg');
   }
 
-  .dark {
+  .dark :root {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;
@@ -58,6 +59,9 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    --menu-icon: url('/icons/menu-dark.svg');
+    --close-icon: url('/icons/close-dark.svg');
   }
 }
 
@@ -84,7 +88,7 @@
 
 @layer base {
   body {
-    @apply  font-elite text-black;
+    @apply font-elite text-black;
   }
 
   .dark body {
@@ -93,6 +97,7 @@
 }
 
 .heartbeat {
+  position: absolute;
   -webkit-animation: heartbeat 1.5s ease-in-out infinite both;
           animation: heartbeat 1.5s ease-in-out infinite both;
 }
@@ -166,10 +171,11 @@
             animation-timing-function: ease-out;
   }
 }
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr)) !important; /* 1 column on small devices */
-  gap: 1rem;
+  gap: 1rem !important;
 }
 
 @media (min-width: 640px) {
@@ -201,5 +207,3 @@
     grid-template-columns: repeat(6, minmax(0, 1fr)) !important; /* 6 columns on ultra-wide screens */
   }
 }
-
-

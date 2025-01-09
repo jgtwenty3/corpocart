@@ -12,7 +12,7 @@ export const categories = [
     "Deodorant",
     'Drinks',
     'Energy Drinks',
-    "Feminine Hygeine Products",
+    "Feminine Hygeine",
     'Frozen Pizza',
     "Household Cleaners",
     'Ice Cream',

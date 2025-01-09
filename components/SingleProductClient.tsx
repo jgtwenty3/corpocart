@@ -20,6 +20,7 @@ type ProductProps = {
   }>;
 };
 
+
 const SingleProductClient = ({ product, recommendations }: ProductProps) => {
   const router = useRouter();
 
@@ -42,7 +43,7 @@ const SingleProductClient = ({ product, recommendations }: ProductProps) => {
                   <h3 className="text-2xl font-bold text-black">{rec.name}</h3>
                   <p className="text-lg text-gray-600">Category: {rec.category}</p>
                   <p className="text-lg text-gray-600">Owner: {rec.owner_name}</p>
-                  <p className="text-lg text-gray-600">Owner Type: {rec.owner_type}</p>
+                  <p className="text-lg text-gray-600">Owner Type: <span className='text-green'>{rec.owner_type}</span> </p>
                 </div>
               </Link>
             ))}

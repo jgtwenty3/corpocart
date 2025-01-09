@@ -13,6 +13,7 @@ type Product = {
 type Owner = {
   name: string;
   owner_type: string;
+  notes:string;
 };
 
 type OwnerProps = {
@@ -27,7 +28,8 @@ const SingleOwnerClient = ({ owner, products = [] }: OwnerProps) => {
     <div className="p-4 rounded-md flex-1 m-4 shadow-md">
       <div className='mb-10'>
         <h1 className="text-4xl font-bold mb-2">{owner.name}</h1>
-        <p className="text-2xl text-white">Type: {owner.owner_type}</p>
+        <p className="text-3xl text-white mb-5">Type: <span className='text-2xl'>{owner.owner_type}</span></p>
+        <p className='text-3xl'>Notes: <br/><span className='text-2xl'>{owner.notes}</span></p>
       </div>
 
       {products.length > 0 && (

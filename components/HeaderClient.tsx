@@ -1,25 +1,32 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useTheme } from 'next-themes'; 
 
 const HeaderClient = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { theme } = useTheme(); 
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
+  const getIconSrc = () => {
+    if (menuOpen) {
+      return theme === 'dark' ? '/icons/close-dark.svg' : '/icons/close-light.svg';
+    } else {
+      return theme === 'dark' ? '/icons/menu-dark.svg' : '/icons/menu-light.svg';
+    }
+  };
+
   return (
-    <nav className="relative w-full md:w-full flex justify-between  h-10">
-      {/* <div className="flex items-center gap-5 font-semibold text-md md:text-3xl p-5 text-2xl">
-        <Link href={"/"}>CORP-O-CART</Link>
-      </div> */}
-      <div className="md:hidden flex  gap-5 p-3 absolute right-3 top-3">
-        <button onClick={toggleMenu} className="focus:outline-none border-2 border-darkText">
+    <nav className="relative w-full md:w-full flex justify-between h-10">
+      <div className="md:hidden flex gap-5 p-3 absolute right-3 top-3">
+        <button onClick={toggleMenu} className="focus:outline-none">
           <Image
-            src={menuOpen ? "/icons/close.svg" : "/icons/menu.svg"}
+            src={getIconSrc()} 
             alt={menuOpen ? "Close menu" : "Open menu"}
             width={24}
             height={24}
@@ -27,15 +34,12 @@ const HeaderClient = () => {
         </button>
       </div>
       {menuOpen && (
-        <div className="absolute top-16 right-0 w-full bg-white text-black shadow-xl shadow-black md:hidden z-10 p-5 border-2 border-black  ">
-          <div className="flex flex-col  items-end p-4">
-            <Link href={"/products"} className="py-2" onClick={toggleMenu}>PRODUCTS</Link>
-            <Link href={"/owners"} className="py-2" onClick={toggleMenu}>OWNERS</Link>
-            <Link href={"/sign-in"} className="py-2" onClick={toggleMenu}>SIGN IN</Link>
-            <Link href={"/sign-up"} className="py-2" onClick={toggleMenu}>SIGN UP</Link>
-          </div>
-          <div>
-            
+        <div className="absolute top-16 right-0 w-full bg-white text-black shadow-xl shadow-black md:hidden z-10 p-5 border-2 border-black">
+          <div className="flex flex-col items-end p-4">
+            <Link href="/products" className="py-2" onClick={toggleMenu}>PRODUCTS</Link>
+            <Link href="/owners" className="py-2" onClick={toggleMenu}>OWNERS</Link>
+            <Link href="/sign-in" className="py-2" onClick={toggleMenu}>SIGN IN</Link>
+            <Link href="/sign-up" className="py-2" onClick={toggleMenu}>SIGN UP</Link>
           </div>
         </div>
       )}
