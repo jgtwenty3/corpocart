@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link'; // Import the Link component from Next.js
+import Link from 'next/link'; 
 
 type Product = {
   id: string;
@@ -36,7 +36,7 @@ const SingleOwnerClient = ({ owner, products = [] }: OwnerProps) => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {products.map((product) => (
               <Link href={`/products/${product.id}`} key={product.id}>
-                <div className="p-4 border-2 rounded-md bg-white border-darkText text-black hover:bg-gray-100">
+                <div className="p-4 border-2 rounded-md bg-white border-black text-black hover:bg-gray-100">
                   <h3 className="text-2xl font-bold">{product.name}</h3>
                   <p className="text-lg">Category: {product.category}</p>
                 </div>

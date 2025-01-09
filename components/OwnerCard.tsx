@@ -28,7 +28,7 @@ const OwnerCard = ({ owner }: { owner: Owner }) => {
 
   return (
     <Link href={`/owners/${owner.id}`} passHref>
-      <div className="bg-white p-4 rounded-lg shadow-md cursor-pointer">
+      <div className="bg-white p-4 rounded-lg shadow-md cursor-pointer border-2 border-black">
         <h2 className="text-xl md:text-lg text-black font-bold">{owner.name}</h2>
         <p className="text-sm md:text-md text-gray-600">
           Ownership Type: <span className={ownershipTypeClass}>{owner.owner_type || 'Unknown'}</span>
