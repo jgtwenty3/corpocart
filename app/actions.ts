@@ -228,63 +228,33 @@ export const getProductsByOwner = async (ownerName: string) => {
   return products;
 };
 
-export const addToCart = async (productId: string) => {
-  const supabase = await createClient();
+const calculateShares = (cartItems) => {
+  let megacorpShare = 0;
+  let privateEquityShare = 0;
+  let founderOwnedShare = 0;
 
-  const {
-    data: { user },
-    error: userError
-  } = await supabase.auth.getUser();
+  cartItems.forEach((item) => {
+    switch (item.owner_type) {
+      case 'Megacorporation':
+        megacorpShare += 1;
+        break;
+      case 'Private Equity':
+        privateEquityShare += 1;
+        break;
+      case 'Founder or Family Owned':
+        founderOwnedShare += 1;
+        break;
+      default:
+        break;
+    }
+  });
 
-  if (userError) {
-    console.error("Error fetching user:", userError);
-    return redirect("/sign-in");
-  }
-
-  if (!user) {
-    console.error("User not found");
-    return redirect("/sign-in");
-  }
-
-  // Check if the user already has a cart
-  const { data: cart, error: fetchCartError } = await supabase
-    .from("cart")
-    .select("products")
-    .eq("user_id", user.id)
-    .maybeSingle();
-
-  if (fetchCartError) {
-    console.error("Error fetching cart items:", fetchCartError);
-    return { status: "error", message: "Could not fetch cart items" };
-  }
-
-  const newProducts = cart?.products ? [...cart.products, productId] : [productId];
-
-  let updateOrInsertError;
-
-  if (cart) {
-    const { error: updateError } = await supabase
-      .from("cart")
-      .update({ products: newProducts })
-      .eq("user_id", user.id);
-    updateOrInsertError = updateError;
-  } else {
-    const { error: insertError } = await supabase
-      .from("cart")
-      .insert({ user_id: user.id, products: newProducts });
-    updateOrInsertError = insertError;
-  }
-
-  if (updateOrInsertError) {
-    console.error("Error adding to cart:", updateOrInsertError);
-    return { status: "error", message: "Could not add to cart" };
-  }
-
-  return { status: "success", message: "Item added to cart" };
+  return {
+    megacorpShare: megacorpShare / cartItems.length,
+    privateEquityShare: privateEquityShare / cartItems.length,
+    founderOwnedShare: founderOwnedShare / cartItems.length,
+  };
 };
-
-
-
 
 export const getCartItems = async () => {
   const supabase = await createClient();
@@ -305,7 +275,7 @@ export const getCartItems = async () => {
   }
 
   const { data: cartProducts, error: cartError } = await supabase
-    .from("cart_products_view")
+    .from("cart_products_owners_view")
     .select("*")
     .eq("user_id", user.id);
 
@@ -314,10 +284,18 @@ export const getCartItems = async () => {
     return [];
   }
 
-  console.log("Cart products:", cartProducts);
+  console.log("Cart products with owner info:", cartProducts);
 
-  return cartProducts;
+  const shares = calculateShares(cartProducts);
+
+  return {
+    cartItems: cartProducts,
+    shares,
+  };
 };
+
+
+
 
 
 
