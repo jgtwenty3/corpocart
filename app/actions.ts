@@ -53,7 +53,7 @@ export const signInAction = async (formData: FormData) => {
     return encodedRedirect("error", "/sign-in", error.message);
   }
 
-  return redirect("/");
+  return redirect("/cart");
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
@@ -227,4 +227,97 @@ export const getProductsByOwner = async (ownerName: string) => {
   console.log('Fetched products by owner:', products);
   return products;
 };
+
+export const addToCart = async (productId: string) => {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabase.auth.getUser();
+
+  if (userError) {
+    console.error("Error fetching user:", userError);
+    return redirect("/sign-in");
+  }
+
+  if (!user) {
+    console.error("User not found");
+    return redirect("/sign-in");
+  }
+
+  // Check if the user already has a cart
+  const { data: cart, error: fetchCartError } = await supabase
+    .from("cart")
+    .select("products")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (fetchCartError) {
+    console.error("Error fetching cart items:", fetchCartError);
+    return { status: "error", message: "Could not fetch cart items" };
+  }
+
+  const newProducts = cart?.products ? [...cart.products, productId] : [productId];
+
+  let updateOrInsertError;
+
+  if (cart) {
+    const { error: updateError } = await supabase
+      .from("cart")
+      .update({ products: newProducts })
+      .eq("user_id", user.id);
+    updateOrInsertError = updateError;
+  } else {
+    const { error: insertError } = await supabase
+      .from("cart")
+      .insert({ user_id: user.id, products: newProducts });
+    updateOrInsertError = insertError;
+  }
+
+  if (updateOrInsertError) {
+    console.error("Error adding to cart:", updateOrInsertError);
+    return { status: "error", message: "Could not add to cart" };
+  }
+
+  return { status: "success", message: "Item added to cart" };
+};
+
+
+
+
+export const getCartItems = async () => {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+    error: userError
+  } = await supabase.auth.getUser();
+
+  if (userError) {
+    console.error("Error fetching user:", userError);
+    return redirect("/sign-in");
+  }
+
+  if (!user) {
+    console.error("User not found");
+    return redirect("/sign-in");
+  }
+
+  const { data: cartProducts, error: cartError } = await supabase
+    .from("cart_products_view")
+    .select("*")
+    .eq("user_id", user.id);
+
+  if (cartError) {
+    console.error("Error fetching cart products:", cartError);
+    return [];
+  }
+
+  console.log("Cart products:", cartProducts);
+
+  return cartProducts;
+};
+
+
 

@@ -32,6 +32,7 @@
 
     --menu-icon: url('/icons/menu-light.svg');
     --close-icon: url('/icons/close-light.svg');
+    --cart-icon: url('/icons/cart-light.svg');
   }
 
   .dark :root {
@@ -62,6 +63,8 @@
 
     --menu-icon: url('/icons/menu-dark.svg');
     --close-icon: url('/icons/close-dark.svg');
+    --cart-icon: url('/icons/cart-dark.svg');
+
   }
 }
 
@@ -97,7 +100,7 @@
 }
 
 .heartbeat {
-  position: absolute;
+ 
   -webkit-animation: heartbeat 1.5s ease-in-out infinite both;
           animation: heartbeat 1.5s ease-in-out infinite both;
 }

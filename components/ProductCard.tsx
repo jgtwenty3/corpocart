@@ -1,5 +1,7 @@
+"use client"
 import Link from 'next/link';
 import React from 'react';
+import { addToCart } from "@/app/actions";
 
 type Product = {
   id: string;
@@ -12,13 +14,13 @@ type Product = {
 const getOwnershipTypeClass = (owner_type: string) => {
   switch (owner_type) {
     case 'Founder or Family Owned':
-      return 'text-green'; 
+      return 'text-green text-lg'; 
     case 'Megacorporation':
-      return 'text-darkText';
+      return 'text-darkText text-lg';
     case 'Private Equity':
-      return 'text-orange';
+      return 'text-orange text-lg';
     case 'Co-Op or Employee Owned':
-      return 'text-lightText'
+      return 'text-lightText text-lg';
     default:
       return 'text-gray-500'; 
   }
@@ -27,17 +29,38 @@ const getOwnershipTypeClass = (owner_type: string) => {
 const ProductCard = ({ product }: { product: Product }) => {
   const ownershipTypeClass = getOwnershipTypeClass(product.owner_type);
 
+  const handleAddToCart = async (productId: string) => {
+    const response = await addToCart(productId);
+
+    if (response.status === "error") {
+      console.error(response.message);
+    } else {
+      console.log(response.message);
+    }
+  };
+  
   return (
-    <Link href={`/products/${product.id}`} passHref>
-      <div className="bg-white rounded-lg p-4 border-2 border-black">
-        <h2 className="text-lg text-black font-bold">{product.name}</h2>
-        <p className="text-sm text-gray-600">Category: {product.category}</p>
-        <p className="text-sm md:text-md text-gray-600">Owner: {product.owner_name || 'Unknown'}</p>
-        <p className="text-sm md:text-md text-gray-600">
-          Ownership Type: <span className={ownershipTypeClass}>{product.owner_type || 'Unknown'}</span>
-        </p>
-      </div>
-    </Link>
+    <div className="relative bg-white rounded-lg p-4 border-2 border-black">
+      <Link href={`/products/${product.id}`} passHref>
+        <div>
+          <h2 className="text-2xl text-black font-bold">{product.name}</h2>
+          <p className="text-lg md:text-sm text-gray-600 mb-2">Category: {product.category}</p>
+          <p className="text-lg md:text-md text-gray-600 mb-2">Owner: {product.owner_name || 'Unknown'}</p>
+          <p className="text-lg md:text-md text-gray-600 mb-8">
+            Ownership Type:<br/> <span className={ownershipTypeClass}>{product.owner_type || 'Unknown'}</span>
+          </p>
+        </div>
+      </Link>
+      <button
+        className="absolute bottom-4 right-4"
+        onClick={(e) => {
+          e.preventDefault(); // Prevents the link from navigating away
+          handleAddToCart(product.id);
+        }}
+      >
+        <img src="/icons/cart.svg" alt="Add to cart" width={24} height={24} />
+      </button>
+    </div>
   );
 };
 

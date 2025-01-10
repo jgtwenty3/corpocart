@@ -38,7 +38,7 @@ const CategoryFilter = ({ categories }: { categories: string[] }) => {
     <div className="relative inline-block w-full md:w-56">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="h-10 w-full bg-black border border-black text-white hover:border-gray-500 px-4 py-2 rounded-lg shadow flex items-center justify-between"
+        className="h-10 w-full border   hover:border-gray-500 px-4 py-2 rounded-lg shadow flex items-center justify-between"
       >
         {selectedCategory ? selectedCategory : "Categories"}
         <svg

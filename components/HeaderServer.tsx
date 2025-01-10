@@ -5,7 +5,7 @@ import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 
 const HeaderServer = () => (
   <div className="w-full flex justify-between items-center p-3 text-sm">
-    <div className="flex items-center gap-5 ml-5 font-semibold text-2xl md:text-3xl">
+    <div className="flex items-center gap-5 ml-0 md:ml-5 font-semibold text-2xl md:text-3xl">
       <Link href={"/"}>CORP-O-CART</Link>
     </div>
     <div className="hidden md:flex items-center gap-5">

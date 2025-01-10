@@ -38,7 +38,7 @@ const OwnerTypeFilter = ({ ownerTypes = [] }: { ownerTypes: string[] }) => {
     <div className="relative inline-block w-full md:w-56">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="h-10 w-full bg-black border border-darkText text-white hover:border-gray-500 px-4 py-2 rounded-lg shadow flex items-center justify-between"
+        className="h-10 w-full  border   hover:border-gray-500 px-4 py-2 rounded-lg shadow flex items-center justify-between"
       >
         {selectedOwnerType ? selectedOwnerType : "Ownership Type"}
         <svg
@@ -61,7 +61,7 @@ const OwnerTypeFilter = ({ ownerTypes = [] }: { ownerTypes: string[] }) => {
       {isOpen && (
         <ul
           ref={dropdownRef}
-          className="absolute left-0 mt-2 max-h-60 w-full bg-black text-white border border-darkText rounded-lg shadow-lg z-10 overflow-y-auto"
+          className="absolute left-0 mt-2 max-h-60 w-full bg-black text-white border rounded-lg shadow-lg z-10 overflow-y-auto"
         >
           <li
             className="px-4 py-2 hover:bg-gray-100 cursor-pointer"

@@ -23,8 +23,8 @@ const TableSearch = () => {
       type="text"
       value={search}
       onChange={handleSearchChange}
-      placeholder="Search..."
-      className="h-10 w-full md:w-56 border border-gray-300 rounded-lg px-4 py-2"
+      placeholder="Search Product Name..."
+      className="h-10 w-full md:w-56 border border-gray-black rounded-lg px-4 py-2"
     />
   );
 };

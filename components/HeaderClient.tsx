@@ -3,30 +3,30 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useTheme } from 'next-themes'; 
+import { useTheme } from 'next-themes';
 
 const HeaderClient = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { theme } = useTheme(); 
+  const [iconSrc, setIconSrc] = useState('/icons/menu-light.svg'); // Default to light mode icon
+  const { theme, resolvedTheme } = useTheme(); 
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
-  const getIconSrc = () => {
-    if (menuOpen) {
-      return theme === 'dark' ? '/icons/close-dark.svg' : '/icons/close-light.svg';
-    } else {
-      return theme === 'dark' ? '/icons/menu-dark.svg' : '/icons/menu-light.svg';
-    }
-  };
+  useEffect(() => {
+    setIconSrc(menuOpen
+      ? (resolvedTheme || theme) === 'dark' ? '/icons/close-dark.svg' : '/icons/close-light.svg'
+      : (resolvedTheme || theme) === 'dark' ? '/icons/menu-dark.svg' : '/icons/menu-light.svg'
+    );
+  }, [menuOpen, theme, resolvedTheme]);
 
   return (
     <nav className="relative w-full md:w-full flex justify-between h-10">
-      <div className="md:hidden flex gap-5 p-3 absolute right-3 top-3">
+      <div className="md:hidden flex gap-5 p-3 absolute right-0 top-3">
         <button onClick={toggleMenu} className="focus:outline-none">
           <Image
-            src={getIconSrc()} 
+            src={iconSrc} 
             alt={menuOpen ? "Close menu" : "Open menu"}
             width={24}
             height={24}
