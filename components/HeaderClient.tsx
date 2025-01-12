@@ -38,6 +38,7 @@ const HeaderClient = () => {
           <div className="flex flex-col items-end p-4">
             <Link href="/products" className="py-2" onClick={toggleMenu}>PRODUCTS</Link>
             <Link href="/owners" className="py-2" onClick={toggleMenu}>OWNERS</Link>
+            <Link href="/cart" className="py-2" onClick={toggleMenu}>CART</Link>
             <Link href="/sign-in" className="py-2" onClick={toggleMenu}>SIGN IN</Link>
             <Link href="/sign-up" className="py-2" onClick={toggleMenu}>SIGN UP</Link>
           </div>

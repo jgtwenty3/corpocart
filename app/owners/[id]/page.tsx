@@ -3,13 +3,15 @@ import { getOwnerById, getProductsByOwner } from '@/app/actions';
 import SingleOwnerClient from '@/components/SingleOwnerClient';
 
 interface Params {
-  params: {
-    id: string;
-  };
+  id: string;
 }
 
-const SingleOwnerPage: React.FC<Params> = async ({ params }) => {
-  const { id } = await params;  
+interface Props {
+  params: Params;
+}
+
+const SingleOwnerPage: React.FC<Props> = async ({ params }) => {
+  const { id } = params;  
   const owner = await getOwnerById(id);
 
   if (!owner) {

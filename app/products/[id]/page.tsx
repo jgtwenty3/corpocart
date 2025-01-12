@@ -2,8 +2,17 @@ import React from 'react';
 import { getProductById, getRecommendedProducts } from '@/app/actions';
 import SingleProductClient from '@/components/SingleProductClient';
 
-const SingleProductPage = async ({ params }: { params: { id: string } }) => {
-  const { id } = await Promise.resolve(params);
+// Define the Params and Props interfaces for correct typing
+interface Params {
+  id: string;
+}
+
+interface Props {
+  params: Params;
+}
+
+const SingleProductPage: React.FC<Props> = async ({ params }) => {
+  const { id } = params;  // Correctly destructure synchronous props
   const product = await getProductById(id);
 
   if (!product) {
@@ -19,7 +28,5 @@ const SingleProductPage = async ({ params }: { params: { id: string } }) => {
 
   return <SingleProductClient product={product} recommendations={recommendations} />;
 };
-
-
 
 export default SingleProductPage;
