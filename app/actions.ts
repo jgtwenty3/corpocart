@@ -261,11 +261,11 @@ export const getCartItems = async () => {
 
   const {
     data: { user },
-    error: userError
+    error: userError,
   } = await supabase.auth.getUser();
 
   if (userError) {
-    console.error("Error fetching user:", userError);
+    console.error("Error fetching user:", userError.message);
     return redirect("/sign-in");
   }
 
@@ -280,13 +280,19 @@ export const getCartItems = async () => {
     .eq("user_id", user.id);
 
   if (cartError) {
-    console.error("Error fetching cart products:", cartError);
-    return [];
+    console.error("Error fetching cart products:", cartError.message);
+    return { cartItems: [], shares: calculateShares([]) };
   }
 
-  
+  if (!cartProducts || cartProducts.length === 0) {
+    console.warn("No cart products found for the user.");
+    return { cartItems: [], shares: calculateShares([]) };
+  }
 
   const shares = calculateShares(cartProducts);
+
+  console.log("Fetched cart products:", cartProducts);
+  console.log("Calculated shares:", shares);
 
   return {
     cartItems: cartProducts,
@@ -299,10 +305,7 @@ export const getCartItems = async () => {
 export const addToCart = async (productId: string) => {
     const supabase = await createClient();
 
-    const {
-        data: { user },
-        error: userError
-    } = await supabase.auth.getUser();
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
 
     if (userError) {
         console.error("Error fetching user:", userError);
@@ -314,49 +317,25 @@ export const addToCart = async (productId: string) => {
         return redirect("/sign-in");
     }
 
-    const { data: cart, error: fetchCartError } = await supabase
-        .from("cart_products_owners_view")
-        .select("cart_id, product_id")
-        .eq("user_id", user.id)
-        .maybeSingle();
+    try {
+        // Insert the product into the cart
+        const { error: insertError } = await supabase
+            .from("cart")
+            .insert({ user_id: user.id, product_id: productId });
 
-    if (fetchCartError) {
-        console.error("Error fetching cart items:", fetchCartError);
-        return { status: "error", message: "Could not fetch cart items" };
-    }
-
-    console.log("Fetched cart:", cart);
-
-    let updateOrInsertError;
-
-    if (cart) {
-        const existingProduct = cart.product_id === productId;
-        if (existingProduct) {
-            return { status: "error", message: "Product already in cart" };
+        if (insertError) {
+            console.error("Error adding to cart:", insertError.message);
+            return { status: "error", message: "Could not add to cart" };
         }
 
-        const { error: insertError } = await supabase
-            .from("cart")
-            .insert({ user_id: user.id, product_id: productId });
-
-        updateOrInsertError = insertError;
         console.log("Product added to cart:", productId);
-    } else {
-        const { error: insertError } = await supabase
-            .from("cart")
-            .insert({ user_id: user.id, product_id: productId });
-
-        updateOrInsertError = insertError;
-        console.log("New cart created with product:", productId);
+        return { status: "success", message: "Item added to cart" };
+    } catch (error) {
+        console.error("Unexpected error:", error.message);
+        return { status: "error", message: "Unexpected error occurred" };
     }
-
-    if (updateOrInsertError) {
-        console.error("Error adding to cart:", updateOrInsertError);
-        return { status: "error", message: "Could not add to cart" };
-    }
-
-    return { status: "success", message: "Item added to cart" };
 };
+
 
 
 

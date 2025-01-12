@@ -44,7 +44,7 @@ const ProductCard = ({ product }: { product: Product }) => {
       <Link href={`/products/${product.id}`} passHref>
         <div>
           <h2 className="text-2xl text-black font-bold">{product.name}</h2>
-          <p className="text-lg md:text-sm text-gray-600 mb-2">Category: {product.category}</p>
+          <p className="text-lg md:text-md text-gray-600 mb-2">Category: {product.category}</p>
           <p className="text-lg md:text-md text-gray-600 mb-2">Owner: {product.owner_name || 'Unknown'}</p>
           <p className="text-lg md:text-md text-gray-600 mb-8">
             Ownership Type:<br/> <span className={ownershipTypeClass}>{product.owner_type || 'Unknown'}</span>

@@ -27,6 +27,21 @@ type ClientCartProps = {
   };
 };
 
+const getOwnershipTypeClass = (owner_type: string) => {
+  switch (owner_type) {
+    case 'Founder or Family Owned':
+      return 'text-green text-md'; 
+    case 'Megacorporation':
+      return 'text-darkText text-md';
+    case 'Private Equity':
+      return 'text-orange text-md';
+    case 'Co-Op or Employee Owned':
+      return 'text-lightText text-md';
+    default:
+      return 'text-gray-500'; 
+  }
+};
+
 const ClientCart = ({ initialData }: ClientCartProps) => {
   const [cartItems, setCartItems] = useState(initialData.cartItems);
   const [shares, setShares] = useState(initialData.shares);
@@ -75,7 +90,7 @@ const ClientCart = ({ initialData }: ClientCartProps) => {
         <div>Loading...</div>
       ) : cartItems.length > 0 ? (
         <div className="flex flex-col md:flex-row">
-          <ul className="flex-1 mt-5 md:pr-5 border-r-2 border-gray-300">
+          <ul className="flex-1 mt-5 md:pr-5 border-r-2 border-gray-300 p-2">
             {cartItems.map((item) => (
               <li key={item.cart_id} className="border-b-2 border-gray-300 py-4">
                 <div className="flex justify-between items-center">
@@ -83,10 +98,10 @@ const ClientCart = ({ initialData }: ClientCartProps) => {
                     <h2 className="text-xl font-semibold">{item.product_name}</h2>
                     <p className="text-sm text-gray-500">{item.category}</p>
                     <p className="text-sm text-gray-500">Owner: {item.owner_name}</p>
-                    <p className="text-sm text-gray-500">Ownership Type: {item.owner_type}</p>
+                    <p className={getOwnershipTypeClass(item.owner_type)}>Ownership Type: {item.owner_type}</p>
                   </div>
                   <div className="text-right">
-                    <ActionButton onClick={() => handleRemoveItem(item.product_id)} className="bg-red-500 hover:bg-red-600">
+                    <ActionButton onClick={() => handleRemoveItem(item.product_id)}>
                       Remove
                     </ActionButton>
                   </div>
@@ -97,10 +112,10 @@ const ClientCart = ({ initialData }: ClientCartProps) => {
           {shares && (
             <div className="flex-shrink-0 mt-5 md:mt-0 md:ml-10 md:pl-5">
               <div className="p-4 bg-gray-100 rounded-md shadow-md">
-                <h2 className="text-lg font-semibold mb-3">Your Cart is Owned By:</h2>
-                <p className="text-sm text-gray-500">Megacorporations: {(shares.megacorpShare * 100).toFixed(2)}%</p>
-                <p className="text-sm text-gray-500">Private Equity: {(shares.privateEquityShare * 100).toFixed(2)}%</p>
-                <p className="text-sm text-gray-500">Founder or Family Owned Share: {(shares.founderOwnedShare * 100).toFixed(2)}%</p>
+                <h2 className="text-xl text-black font-semibold mb-3">Your Cart is Owned By:</h2>
+                <p className="text-lg text-gray-500">Megacorporations: <span className='text-darkText'>{(shares.megacorpShare * 100).toFixed(2)}%</span></p>
+                <p className="text-lg text-gray-500">Private Equity: <span className='text-orange'>{(shares.privateEquityShare * 100).toFixed(2)}%</span></p>
+                <p className="text-lg text-gray-500">Founder or Family Owned: <span className='text-green'>{(shares.founderOwnedShare * 100).toFixed(2)}%</span></p>
               </div>
             </div>
           )}

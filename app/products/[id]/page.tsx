@@ -11,8 +11,8 @@ interface Props {
   params: Params;
 }
 
-const SingleProductPage: React.FC<Props> = async ({ params }) => {
-  const { id } = params;  // Correctly destructure synchronous props
+export default async function SingleProductPage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const product = await getProductById(id);
 
   if (!product) {
@@ -20,13 +20,9 @@ const SingleProductPage: React.FC<Props> = async ({ params }) => {
   }
 
   let recommendations = [];
-
   if (product.owner_type === 'Megacorporation' || product.owner_type === 'Private Equity') {
     recommendations = await getRecommendedProducts(product.category, ['Founder or Family Owned']);
-    console.log('Recommendations:', recommendations);
   }
 
   return <SingleProductClient product={product} recommendations={recommendations} />;
-};
-
-export default SingleProductPage;
+}
