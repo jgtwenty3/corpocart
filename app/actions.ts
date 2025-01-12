@@ -284,7 +284,7 @@ export const getCartItems = async () => {
     return [];
   }
 
-  console.log("Cart products with owner info:", cartProducts);
+  
 
   const shares = calculateShares(cartProducts);
 
@@ -296,6 +296,98 @@ export const getCartItems = async () => {
 
 
 
+export const addToCart = async (productId: string) => {
+    const supabase = await createClient();
+
+    const {
+        data: { user },
+        error: userError
+    } = await supabase.auth.getUser();
+
+    if (userError) {
+        console.error("Error fetching user:", userError);
+        return { status: "error", message: "User authentication failed" };
+    }
+
+    if (!user) {
+        console.error("User not found");
+        return redirect("/sign-in");
+    }
+
+    const { data: cart, error: fetchCartError } = await supabase
+        .from("cart_products_owners_view")
+        .select("cart_id, product_id")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+    if (fetchCartError) {
+        console.error("Error fetching cart items:", fetchCartError);
+        return { status: "error", message: "Could not fetch cart items" };
+    }
+
+    console.log("Fetched cart:", cart);
+
+    let updateOrInsertError;
+
+    if (cart) {
+        const existingProduct = cart.product_id === productId;
+        if (existingProduct) {
+            return { status: "error", message: "Product already in cart" };
+        }
+
+        const { error: insertError } = await supabase
+            .from("cart")
+            .insert({ user_id: user.id, product_id: productId });
+
+        updateOrInsertError = insertError;
+        console.log("Product added to cart:", productId);
+    } else {
+        const { error: insertError } = await supabase
+            .from("cart")
+            .insert({ user_id: user.id, product_id: productId });
+
+        updateOrInsertError = insertError;
+        console.log("New cart created with product:", productId);
+    }
+
+    if (updateOrInsertError) {
+        console.error("Error adding to cart:", updateOrInsertError);
+        return { status: "error", message: "Could not add to cart" };
+    }
+
+    return { status: "success", message: "Item added to cart" };
+};
 
 
+
+export const deleteFromCart = async (productId: string) => {
+    const supabase = await createClient();
+
+    try {
+        // Delete the cart entry directly if the product_id matches
+        const { data, error } = await supabase
+            .from('cart')
+            .delete()
+            .eq('product_id', productId)
+            .select('*');
+
+        // Handle any deletion errors
+        if (error) {
+            console.error('Error deleting cart entry:', error.message);
+            return { status: "error", message: error.message };
+        }
+
+        // Check if the deletion occurred
+        if (!data || data.length === 0) {
+            console.error('Product not found in cart:', productId);
+            return { status: "error", message: "Product not found in cart" };
+        }
+
+        console.log('Deleted Cart Entry:', data);
+        return { status: "success", message: "Item removed from cart" };
+    } catch (error) {
+        console.error('Unexpected error:', error.message);
+        return { status: "error", message: 'Unexpected error occurred' };
+    }
+};
 

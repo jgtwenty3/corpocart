@@ -33,6 +33,7 @@
     --menu-icon: url('/icons/menu-light.svg');
     --close-icon: url('/icons/close-light.svg');
     --cart-icon: url('/icons/cart-light.svg');
+    --trash-icon:url('/icons/trash-light.svg')
   }
 
   .dark :root {
@@ -64,6 +65,8 @@
     --menu-icon: url('/icons/menu-dark.svg');
     --close-icon: url('/icons/close-dark.svg');
     --cart-icon: url('/icons/cart-dark.svg');
+    --trash-icon:url('/icons/trash-dark.svg')
+
 
   }
 }
