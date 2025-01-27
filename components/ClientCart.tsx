@@ -103,9 +103,9 @@ const ClientCart = ({ initialData }: ClientCartProps) => {
                       <p className={getOwnershipTypeClass(item.owner_type)}>Ownership Type: {item.owner_type}</p>
                     </div>
                     <div className="text-right md:ml-10">
-                      <ActionButton onClick={(e: any) => { e.preventDefault(); handleRemoveItem(item.product_id); }}>
-                        Remove
-                      </ActionButton>
+                    <ActionButton onClick={() => { handleRemoveItem(item.product_id); }}>
+                      Remove
+                    </ActionButton>
                     </div>
                   </div>
                 </li>
