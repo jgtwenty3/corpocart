@@ -34,22 +34,25 @@ const ProductCard = ({ product }: { product: Product }) => {
   const handleAddToCart = async (productId: string) => {
     try {
       const response = await addToCart(productId);
-
+  
       if (response.status === "error") {
         console.log('Redirecting to sign-in due to auth error');
         router.push('/sign-in');
       } else {
         console.log(response.message);
       }
-    } catch (error) {
-      if (error.__isAuthError) {
+    } catch (error: unknown) {
+      const typedError = error as Error; // Cast the error to a regular Error
+  
+      if ((typedError as any).__isAuthError) {
         console.log('Redirecting to sign-in due to auth error');
         router.push('/sign-in');
       } else {
-        console.error('Error adding product to cart:', error);
+        console.error('Error adding product to cart:', typedError.message);
       }
     }
   };
+  
 
   return (
     <div className="relative bg-white rounded-lg p-4 border-2 border-black">
