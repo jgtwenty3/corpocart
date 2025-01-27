@@ -228,7 +228,12 @@ export const getProductsByOwner = async (ownerName: string) => {
   return products;
 };
 
-const calculateShares = (cartItems) => {
+type CartItem = {
+  owner_type: "Megacorporation" | "Private Equity" | "Founder or Family Owned"; // Adjust this if needed
+  // Add any other properties of cart item that are necessary
+};
+
+const calculateShares = (cartItems: CartItem[]) => {
   let megacorpShare = 0;
   let privateEquityShare = 0;
   let founderOwnedShare = 0;
@@ -331,7 +336,7 @@ export const addToCart = async (productId: string) => {
         console.log("Product added to cart:", productId);
         return { status: "success", message: "Item added to cart" };
     } catch (error) {
-        console.error("Unexpected error:", error.message);
+        console.error("Unexpected error:", Error);
         return { status: "error", message: "Unexpected error occurred" };
     }
 };
@@ -365,7 +370,7 @@ export const deleteFromCart = async (productId: string) => {
         console.log('Deleted Cart Entry:', data);
         return { status: "success", message: "Item removed from cart" };
     } catch (error) {
-        console.error('Unexpected error:', error.message);
+        console.error('Unexpected error:', Error);
         return { status: "error", message: 'Unexpected error occurred' };
     }
 };
