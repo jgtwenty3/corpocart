@@ -9,8 +9,12 @@ import { categories, ownerTypes } from '@/lib/data';
 
 const ITEM_PER_PAGE = 24;
 
-const ProductsPage = async ({ searchParams }: { searchParams?: { [key: string]: string } }) => {
-  const { page, search, category, ownerType } = await searchParams ?? {};
+type SearchParams = Promise<{ page?: string; search?: string; category?: string; ownerType?: string }>;
+
+const ProductsPage = async ({ searchParams }: { searchParams?: SearchParams }) => {
+
+  const { page, search, category, ownerType } = (await searchParams) ?? {};
+
   const p = page ? parseInt(page) : 1;
 
   const supabase = await createClient();
