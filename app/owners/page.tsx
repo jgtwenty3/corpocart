@@ -8,8 +8,17 @@ import { ownerTypes } from '@/lib/data'; // Assuming this contains the predefine
 
 const ITEM_PER_PAGE = 24;
 
-const OwnersPage = async ({ searchParams }: { searchParams: { [key: string]: string } | undefined }) => {
-  const { page, search, category } = await searchParams;
+type SearchParams = Promise<{ [key: string]: string }> | undefined;
+
+interface PageProps {
+  searchParams: SearchParams;
+}
+
+const OwnersPage = async ({ searchParams }: PageProps) => {
+  // Await searchParams if it's a Promise
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const { page, search, category } = resolvedSearchParams;
+
   const p = page ? parseInt(page) : 1;
 
   const supabase = await createClient();
@@ -35,7 +44,7 @@ const OwnersPage = async ({ searchParams }: { searchParams: { [key: string]: str
         <CategoryFilter categories={ownerTypes} />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-4">
-        {owners.map((owner) => (
+        {owners!.map((owner) => (
           <OwnerCard key={owner.id} owner={owner} />
         ))}
       </div>

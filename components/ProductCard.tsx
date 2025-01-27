@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { addToCart } from "@/app/actions";
+import { useRouter } from 'next/navigation';
 
 type Product = {
   id: string;
@@ -28,17 +29,28 @@ const getOwnershipTypeClass = (owner_type: string) => {
 
 const ProductCard = ({ product }: { product: Product }) => {
   const ownershipTypeClass = getOwnershipTypeClass(product.owner_type);
+  const router = useRouter();
 
   const handleAddToCart = async (productId: string) => {
-    const response = await addToCart(productId);
+    try {
+      const response = await addToCart(productId);
 
-    if (response.status === "error") {
-      console.error(response.message);
-    } else {
-      console.log(response.message);
+      if (response.status === "error") {
+        console.log('Redirecting to sign-in due to auth error');
+        router.push('/sign-in');
+      } else {
+        console.log(response.message);
+      }
+    } catch (error) {
+      if (error.__isAuthError) {
+        console.log('Redirecting to sign-in due to auth error');
+        router.push('/sign-in');
+      } else {
+        console.error('Error adding product to cart:', error);
+      }
     }
   };
-  
+
   return (
     <div className="relative bg-white rounded-lg p-4 border-2 border-black">
       <Link href={`/products/${product.id}`} passHref>
@@ -47,7 +59,7 @@ const ProductCard = ({ product }: { product: Product }) => {
           <p className="text-lg md:text-md text-gray-600 mb-2">Category: {product.category}</p>
           <p className="text-lg md:text-md text-gray-600 mb-2">Owner: {product.owner_name || 'Unknown'}</p>
           <p className="text-lg md:text-md text-gray-600 mb-8">
-            Ownership Type:<br/> <span className={ownershipTypeClass}>{product.owner_type || 'Unknown'}</span>
+            Ownership Type:<br /> <span className={ownershipTypeClass}>{product.owner_type || 'Unknown'}</span>
           </p>
         </div>
       </Link>

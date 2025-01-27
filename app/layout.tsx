@@ -13,7 +13,7 @@ const defaultUrl = process.env.VERCEL_URL
 export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: "Corp-O-Cart",
-  description: "Every product you buy helps increase shareholder profits.",
+  description: "Find out which corporations own which brands",
 };
 
 const geistSans = Geist({

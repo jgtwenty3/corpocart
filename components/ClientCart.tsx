@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { getCartItems, deleteFromCart } from "@/app/actions";
 import ActionButton from "@/components/ActionButton";
+import Link from 'next/link';  // Import Link from next
 
 type CartItem = {
   cart_id: string;
@@ -73,7 +74,7 @@ const ClientCart = ({ initialData }: ClientCartProps) => {
           alert("Failed to remove item: " + response.message);
         }
       } catch (error) {
-        console.error('Error:', error.message);
+        console.error('Error:', error);
         alert("Error occurred while removing item");
       }
     } else {
@@ -92,21 +93,23 @@ const ClientCart = ({ initialData }: ClientCartProps) => {
         <div className="flex flex-col md:flex-row">
           <ul className="flex-1 mt-5 md:pr-5 border-r-2 border-gray-300 p-2">
             {cartItems.map((item) => (
-              <li key={item.cart_id} className="border-b-2 border-gray-300 py-4">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <h2 className="text-xl font-semibold">{item.product_name}</h2>
-                    <p className="text-sm text-gray-500">{item.category}</p>
-                    <p className="text-sm text-gray-500">Owner: {item.owner_name}</p>
-                    <p className={getOwnershipTypeClass(item.owner_type)}>Ownership Type: {item.owner_type}</p>
+              <Link href={`/products/${item.product_id}`} key={item.cart_id} passHref> {/* Wrap each item in a Link */}
+                <li className="border-b-2 border-gray-300 py-4">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h2 className="text-xl font-semibold">{item.product_name}</h2>
+                      <p className="text-sm text-gray-500">{item.category}</p>
+                      <p className="text-sm text-gray-500">Owner: {item.owner_name}</p>
+                      <p className={getOwnershipTypeClass(item.owner_type)}>Ownership Type: {item.owner_type}</p>
+                    </div>
+                    <div className="text-right md:ml-10">
+                      <ActionButton onClick={(e: any) => { e.preventDefault(); handleRemoveItem(item.product_id); }}>
+                        Remove
+                      </ActionButton>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <ActionButton onClick={() => handleRemoveItem(item.product_id)}>
-                      Remove
-                    </ActionButton>
-                  </div>
-                </div>
-              </li>
+                </li>
+              </Link>
             ))}
           </ul>
           {shares && (
